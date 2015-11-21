@@ -1,0 +1,31 @@
+README
+------
+
+This package has been developed as the part of PhD thesis work of Chel Hee Lee.  
+
+2015-04-15 
+	* Package is re-designed.
+
+2014-04-15
+	* Package is presented at the desseration for the Degree of Doctor of Philosophy in the Collaborative Graduate Program in Biostatistics, University of Saskatchewan. 
+
+2013-12-02 
+	* Package was introduced and used for the presentation entitled ``Imprecise Zero-truncated Poisson Regression model on Epidemic Surveillance'' at the Community Health and Epidemiology, University of Saskatchewan, Saskatoon, Saskatchewan, Canada.
+
+2013-11-09 
+	* Package was used for the presentation entitled ``Principles of Imprecise Poisson Inferential Framework'' at the AKCSE-Saskatchewan chapter, Saskatoon, Saskatchewan, Canada.
+
+2013-08-08
+	* Package was used for the presentation entitled ``M., Imprecise Truncated Poisson Regression for Predictive Inference'' at the Annual Joint Statistical Meetings, Montreal, Quebec, Canada. 
+
+2013-05-29
+	* Package was used for the presentation entitled ``Zero-Truncated Poisson Imprecise Probability Model for Quantifying Prior Ignorance'' at the Annual Meeting of the Statistical Society of Canada, Edmonton, Alberta, Canada.
+
+2013-02-28
+	* Package is used for the presentation entitled ``Practice of Statistical Modelling: Estimating the size of missed cases in a target population'' at the School of Public Health Seminar Series, Saskatoon, Saskatchewan, Canada.
+	
+2012-09-12 
+	* Initial package prototype is presented at the Fifth Workshop on Principles and Methods of Statistical Inference with Interval Probability, Department of Statistics, Ludwig Maximilians University, Munich, Germany.
+
+2012-08-20
+  * Package is initially created.
