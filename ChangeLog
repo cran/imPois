@@ -1,6 +1,11 @@
 Change Log
 ----------
 
+2015-11-27
+	* 'ztrunc=TRUE' option is added.
+	* pdf, cdf, and pbox functions are added. 
+	* summary, update, plot methods are added. 
+
 2015-11-20
 	* Package is initially submitted to CRAN
 	

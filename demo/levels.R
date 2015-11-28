@@ -1,42 +1,36 @@
-# This demo describes level curves 
-# foo2.R (in previous package)
-# confirmed on 2015.11.21
+# 
+# This demo shows a set of level surface from -3 to 3 running by 1 
+# on the expectation of canonical parameter. 
+# 
+# updated on 2015.11.21
+# 
 
-# rm(list=ls())
-library(imPois)
-library(lattice)
-
-# source("./../R/imPois.R")
-# source("./../R/visualize.R")
-
-
-# fails <- list()
-e2 <- seq(from=0.05, to=4, by=0.25) # from=0.01, to=5, by=0.25 (if e2 <= 0.05, it fails. it is safe starting with 0.7)
-e0 <- seq(from=0, to=2.5, by=0.5)   # from=0,    to=3, by=0.25
-et <- -3:3
+# Grid on the hyperparameter space 
+e2 <- seq(from=0.05, to=4, by=0.25)
+e0 <- seq(from=0, to=2.5, by=0.5)
+et <- seq(from=-3, to=3, by=1)
 h0 <- expand.grid(e2=e2, e0=e0, et=et)
 fn <- function(x){
-	x <- as.vector(x)
-	f0 <- function(xm, ...){ # xm = eta1
-		val <- evfn(y=numeric(0), pars=c(x[1], xm, x[2]), ztrunc=FALSE)$value - x[3]
-		return(val)
-	}
-	
-	val <- tryCatch(uniroot(f0, lower=-10, upper=10, extendInt="yes", tol=1e-5)$root, error=function(e){ 
-		# fails[[length(fails)+1]] <- x; 
-		return(NaN) 
-	})
-# 	cat("[x=", x, "] val=", val, "\n")
+	f0 <- function(xm, ...) evfn(y=numeric(0), pars=c(x[1], xm, x[2]))$value - x[3]
+	val <- tryCatch(uniroot(f0, lower=-10, upper=10, extendInt="yes", tol=1e-5)$root, error=function(e) return(NaN))
 	return(val)	
 }
 h0$e1 <- apply(h0, 1, fn)
 
-wireframe(e1~e0*e2, data=h0, group=et, scales=list(arrows=FALSE), xlab=expression(eta[0]), ylab=expression(eta[2]), zlab=expression(eta[1]), zlim=c(-10,10), screen=list(x=-35,y=70,z=-25), auto.key=list(space="right"))
+# Set of nonlinear level surfaces
+require(rgl)
+m <- matrix(h0$e1, ncol=length(e0), nrow=length(e2))
+rgl.open()
+rgl.clear()
+rgl.bg(color="white")
+rgl.points(x=h0$e0, y=h0$e2, z=h0$e1, color="grey")
+decorate3d()
+aspect3d(1,1.5,2)
 
-wireframe(e1~e0*e2, data=h0, group=et, scales=list(arrows=FALSE), xlab=expression(eta[0]), ylab=expression(eta[2]), zlab=expression(eta[1]), zlim=c(-10,10), screen=list(x=-40,y=-60,z=-25), auto.key=list(space="right"))
-
-# opt1. screen=list(y=60, x=15, z=20), 
-#	opt2. screen=list(y=105, x=15),
-# opt3. screen=list(y=80, x=20, z=-20),
-# xyplot(e1~e2|as.factor(e0), data=h0, group=et, type="l")
+cols <- rainbow(7, s=0.7)
+for(i in -3:3){
+	h1 <- subset(h0, subset=(et==i))
+	m1 <- matrix(h1$e1, ncol=length(e0), nrow=length(e2))
+	surface3d(x=e0, y=e2, z=t(m1), color=cols[i+4])
+}
 
