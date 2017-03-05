@@ -1,6 +1,0 @@
-convh     demo for characterizing imprecise prior 
-trans     demo for translation behaviours (limiting)
-levels    demo for level curves 
-optim     demo for optimization 
-focus     demo for focusing behaviour 
-ztrunc    demo for zero-truncated Poisson 

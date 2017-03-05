@@ -1,0 +1,121 @@
+%\VignetteIndexEntry{imPoisVignette}
+%\VignetteEngine{knitr::knitr}
+%\VignetteEncoding{UTF-8}
+
+\documentclass{article}
+
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{verbatim}
+% \usepackage{Sweave}
+\usepackage{natbib}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+\usepackage{graphicx}
+\usepackage{setspace}
+\doublespacing
+
+
+\title{Imprecise Inference for Poisson Sampling Model}
+\author{Chel Hee Lee \and Mikelis Bickis}
+
+\begin{document}
+\maketitle
+% \SweaveOpts{echo=FALSE}
+
+% \begin{abstract}
+% \end{abstract}
+
+
+\section{Getting Started}
+
+<<>>=
+library(imPois)
+@
+
+\section{Simulation}
+
+The following data is taken from the xample in \citet{Howlader:2003} as below:
+
+\begin{center}
+\begin{tabular}{c cccccccccc c}
+$y$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & Total \\ \hline
+$n_y$ & 75 & 103 & 121 & 54 & 30 & 13 & 2 & 1 & 0 & 1 & 400 
+\end{tabular}
+\end{center}
+
+For this data, $n=400$, $T=720$ so that MLE of $\lambda$ is $\bar{x}=1.8$. 
+
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[height=8cm, keepaspectratio]{./fig/app01.pdf}
+\end{center}
+%% The R codes for this figure is written on the file "./inst/app01.R"
+\end{figure}
+
+
+
+
+\section{Application}
+
+The following data is taken from the example in \citet{Dahiya:1973} as below:
+
+\begin{center}
+\begin{tabular}{c cccc c}
+$y$ & 1 & 2 & 3 & 4 & Total \\ \hline
+$n_y$ & 32 & 16 & 6 & 1 & 55
+\end{tabular}
+\end{center}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[height=8cm, keepaspectratio]{./fig/app02.pdf}
+\end{center}
+% R codes for this figure is written in the file "app02.R"
+\end{figure}
+
+<<include=FALSE>>=
+sumy <- 32*1+2*16+3*6+4*1
+n <- 32+16+6+1 
+
+em.min <- em.rt.ztrunc(y=numeric(0), pars=c(0,0+sumy,1+n))$value # minimum from (0,1) #$
+em.max <- em.rt.ztrunc(y=numeric(0), pars=c(0,1+sumy,0+n))$value # maximum from (1,0) #$
+@
+
+
+<<include=FALSE>>=
+## MLE using the explicit formula given by Irwin 1959.
+
+x <- c(1,2,3,4)
+nx <- c(32,16,6,1)
+xbar <- sum(nx*x)/sum(nx)
+
+j <- 0
+rv <- 0
+epsilon <- 1
+while(epsilon > 1e-8){
+	j <- j+1
+	rv1 <- rv + j^(j-1)/factorial(j)*(xbar*exp(-xbar))^j
+	epsilon <- abs(rv1-rv)
+	rv <- rv1
+}
+lambda <- xbar - rv
+@
+
+We characterize an imprecise prior for inference by specifying the hyperparameter space such as $\{ (\xi_1, \xi_0) | (0,0) \times (1,1) \}$.  
+Posterior minimum and maximum produced from this specification are $\underline{E}_{\xi_1,\xi_0}^{\mu}[Y] = $ \Sexpr{round(em.min, 3)} and $\overline{E}_{\xi_1,\xi_0}^{\mu}[Y] = $ \Sexpr{round(em.max,3)}.  
+Note that \citet{Dahiya:1973} reported $\hat{\lambda}_{MLE}=0.970$.  This estimate can be obtained numerically.  Later, \citet{Irwin:1959} found an explicity expression of $\hat{\lambda}_{MLE}$ = \Sexpr{round(lambda, 4)}. 
+
+
+
+
+\nocite{Howlader:2003}
+\nocite{Blumenthal:1978}
+\nocite{Lee:2014}
+\nocite{Irwin:1959}
+
+
+\bibliographystyle{apalike}
+\bibliography{imPois}
+
+\end{document}
